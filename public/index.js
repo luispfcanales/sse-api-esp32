@@ -1,6 +1,6 @@
 console.log("hola")
 const id = Math.random()
-let source = new EventSource(`http://localhost:3000/listen-event?id=${id}`)
+let source = new EventSource(`https://esp32-api.onrender.com/listen-event?id=${id}`)
 
 //source.onmessage = function(event){
 //  console.log(event.data)
