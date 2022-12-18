@@ -14,7 +14,7 @@ func Run() error {
 	hdlEvent := events.NewHandlerEvent()
 
 	http.Handle("/", http.StripPrefix("/", http.FileServer(http.Dir("public"))))
-	http.HandleFunc("/listen-event", hdlEvent.Listen)
+	http.HandleFunc("/listen-event", mdl.Cors(hdlEvent.Listen))
 	http.HandleFunc("/arduino-data", mdl.Cors(hdlEvent.CreateEvent))
 
 	return http.ListenAndServe(getPort(), nil)
