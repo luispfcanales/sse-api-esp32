@@ -1,10 +1,8 @@
 package events
 
 import (
-	"fmt"
-	"math/rand"
+	"encoding/json"
 	"net/http"
-	"time"
 )
 
 // Sensor is data model that arduino sent
@@ -58,26 +56,30 @@ func (hdl *HandlerEvent) Listen(w http.ResponseWriter, r *http.Request) {
 
 // CreateEvent send event to broadcast
 func (hdl *HandlerEvent) CreateEvent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("Content-Type", "application/json")
+
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
 
-	s := &Sensor{}
+	list := &Sensor{}
+	//rand.Seed(time.Now().UnixNano())
+	//s.Datetime = time.Now().Format("15:04:05")
 
-	rand.Seed(time.Now().UnixNano())
-	min := 10
-	max := 39
-
-	s.Datetime = time.Now().Format("15:04:05")
-	s.Temperature = fmt.Sprintf("%v", rand.Intn((max-min+1)+min))
-
-	//json.NewDecoder(r.Body).Decode(s)
+	err := json.NewDecoder(r.Body).Decode(list)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
 
 	hdl.broadcast(SSEvent{
 		EventName: "arduino",
-		Data:      s,
+		Data:      list,
 	})
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(list)
 }
 
 func (hdl *HandlerEvent) delete(id string) {
