@@ -2,7 +2,9 @@ package events
 
 import (
 	"encoding/json"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 // Sensor is data model that arduino sent
@@ -56,6 +58,7 @@ func (hdl *HandlerEvent) Listen(w http.ResponseWriter, r *http.Request) {
 
 // CreateEvent send event to broadcast
 func (hdl *HandlerEvent) CreateEvent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Add("Content-Type", "application/json")
 
 	if r.Method != http.MethodPost {
@@ -64,8 +67,8 @@ func (hdl *HandlerEvent) CreateEvent(w http.ResponseWriter, r *http.Request) {
 	}
 
 	list := &Sensor{}
-	//rand.Seed(time.Now().UnixNano())
-	//s.Datetime = time.Now().Format("15:04:05")
+	rand.Seed(time.Now().UnixNano())
+	list.Datetime = time.Now().Format("15:04:05")
 
 	err := json.NewDecoder(r.Body).Decode(list)
 	if err != nil {
