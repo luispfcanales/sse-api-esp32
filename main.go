@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/luispfcanales/sse-api/api"
+	"github.com/luispfcanales/sse-api-esp32/api"
 )
 
 func main() {

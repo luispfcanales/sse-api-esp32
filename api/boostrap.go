@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/luispfcanales/sse-api/api/events"
-	"github.com/luispfcanales/sse-api/pkg/mdl"
+	"github.com/luispfcanales/sse-api-esp32/api/events"
+	"github.com/luispfcanales/sse-api-esp32/pkg/mdl"
 )
 
 // Run start api
